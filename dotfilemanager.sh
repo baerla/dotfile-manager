@@ -2,12 +2,15 @@
 
 init_check() {
     # Checks if it is the first use (both variables are set)
-    if [[ -z ${DOT_REPO} && -z ${DOT_DEST} ]]; then
-        initial_setup
-    else
+    # if [[ -z ${DOT_REPO} && -z ${DOT_DEST} ]]; then
+    #     initial_setup
+    # else
+    DOT_REPO="dotfiles"
+    DOT_DEST="."
+    
         repo_check
         manage
-    fi
+    # fi
 }
 
 repo_check() {
@@ -47,6 +50,7 @@ add_env() {
     echo -e "\nExporting env variables DOT_DEST & DOT_REPO ..."
 
     current_shell=$(basename "$SHELL")
+    echo ${current_shell}
     if [[ $current_shell == "zsh" ]]; then
         echo "export DOT_REPO=$1" >> "$HOME"/.zshrc
         echo "export DOT_DEST=$2" >> "$HOME"/.zshrc
@@ -88,7 +92,7 @@ manage() {
 
 find_dotfiles() {
     printf "\n"
-    readarray -t dotfiles < <( find "${HOME}" -maxdepth 1 -name ".*" -type f)
+    readarray -t dotfiles < <( find "${HOME}" -maxdepth 1 -name ".*" -type f )
     printf "%s\n" "${dotfiles[@]}"
 }
 
@@ -169,4 +173,8 @@ clone_dotrepo (){
 	fi
 }
 
+# source ~/.zshrc
+echo $(basename "$SHELL")
+echo $DOT_DEST
+echo $DOT_REPO
 init_check
